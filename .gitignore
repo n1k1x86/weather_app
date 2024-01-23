@@ -6,3 +6,5 @@
 /.idea/misc.xml
 /.idea/.gitignore
 /weather_api/db.sqlite3
+/weather_api/.cache.sqlite
+/weather_api/main_api/migrations/0001_initial.py
