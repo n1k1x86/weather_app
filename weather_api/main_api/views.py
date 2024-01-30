@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
+from .models import Country
 
 
 # from django.http import HttpResponse
@@ -14,4 +15,5 @@ from django.views import View
 class MainPageView(View):
     @staticmethod
     def get(request):
-        return render(request, template_name='main_api/main_page/main_page.html')
+        countries = Country.objects.all()
+        return render(request, template_name='main_api/main_page/main_page.html', context={'countries': countries})

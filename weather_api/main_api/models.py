@@ -3,7 +3,8 @@ from django.db import models
 
 class Country(models.Model):
     name = models.CharField(default=None, max_length=255)
-    country_image = models.ImageField(upload_to='uploads/country/')
+    country_image = models.ImageField(upload_to='images/country/')
+    some_info = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'country'

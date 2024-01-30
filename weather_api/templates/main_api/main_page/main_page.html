@@ -3,14 +3,18 @@
 
 {% block extend_head %}
 <link rel="stylesheet" href="{% static 'main_api/main_page/main_page.css' %}">
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
 {% endblock %}
 
 {% block content %}
-  <div class="weather-card">
-    <h2>City 1</h2>
-    <div class="weather-info">
-      <p>Weather: Sunny</p>
-      <p>Temperature: 25°C</p>
-    </div>
+<div>
+  <h1>Choose country</h1>
+</div>
+<div>
+  {% for country in countries %}
+  <div class="weather-card" style="background-image: url('{{ country.country_image.url }}');">
+    <h2>{{country.name}}</h2>
   </div>
+{% endfor %}
+</div>
 {% endblock %}
