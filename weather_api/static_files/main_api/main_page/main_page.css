@@ -26,6 +26,12 @@
       color: black;
       font-weight: 100;
       font-size: 17px;
+      transition: transform 0.3s ease-out;
+      position: relative;
+    }
+
+    .weather-card:hover {
+      transform: translateY(-20px);
     }
 
     h2 {
