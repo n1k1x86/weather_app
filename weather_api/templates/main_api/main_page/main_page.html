@@ -12,9 +12,11 @@
 </div>
 <div>
   {% for country in countries %}
-  <div class="weather-card" style="background-image: url('{{ country.country_image.url }}');">
+  <div id={{ country.id }} class="weather-card"
+       style="background-image: url('{{ country.country_image.url }}');" onclick="to_city_redirect(this.id)">
     <h2>{{country.name}}</h2>
   </div>
 {% endfor %}
 </div>
+<script src="{% static 'main_api/main_page/js/to_city.js' %}"></script>
 {% endblock %}
