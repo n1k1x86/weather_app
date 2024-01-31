@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1>Choose params</h1>
+
+{% for param in params %}
+    <input type="checkbox" name="stats_checkbox" value="{{ param }}">{{ param }}<br>
+{% endfor %}
+
+<button onclick="calc_func()">Calc</button>
+<script src="{% static 'main_api/stats_params_page/js/stats_params_page.js' %}"></script>
+{% endblock %}

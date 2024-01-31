@@ -13,7 +13,7 @@
 <div>
   {% for city in cities %}
   <div id={{ city.id }} class="weather-card"
-       style="background-image: url('{{ city.city_image.url }}');" onclick="to_city_stats(this.id)">
+       style="background-image: url('{{ city.city_image.url }}');" onclick="to_city_choose_params(this.id)">
     <h2>{{city.city}}</h2>
   </div>
 {% endfor %}
