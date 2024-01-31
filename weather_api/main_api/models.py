@@ -13,7 +13,7 @@ class Country(models.Model):
 class City(models.Model):
     city = models.CharField(default=None, max_length=255)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    city_image = models.ImageField(upload_to='uploads/cities/')
+    city_image = models.ImageField(upload_to='images/cities/')
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
 
