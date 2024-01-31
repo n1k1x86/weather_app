@@ -1,0 +1,45 @@
+
+
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("images/background.png");
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Pacifico';
+      font-size: 30px;
+    }
+
+    .weather-card {
+      border-radius: 8px;
+      border: solid;
+      border-width: 4px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      width: 200px; /* Adjust the width as needed */
+      margin: 10px;
+      background-size: cover;
+      color: black;
+      font-weight: 100;
+      font-size: 17px;
+      transition: transform 0.3s ease-out;
+      position: relative;
+    }
+
+    .weather-card:hover {
+      transform: translateY(-20px);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .weather-info p {
+      margin: 0;
+    }

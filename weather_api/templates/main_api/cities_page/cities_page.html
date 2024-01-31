@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extend_head %}
-<link rel="stylesheet" href="{% static 'main_api/main_page/main_page.css' %}">
+<link rel="stylesheet" href="{% static 'main_api/cities_page/cities_page.css' %}">
 <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
 {% endblock %}
 
@@ -14,7 +14,7 @@
   {% for city in cities %}
   <div id={{ city.id }} class="weather-card"
        style="background-image: url('{{ city.city_image.url }}');" onclick="to_city_stats(this.id)">
-    <h2>{{country.name}}</h2>
+    <h2>{{city.city}}</h2>
   </div>
 {% endfor %}
 </div>
