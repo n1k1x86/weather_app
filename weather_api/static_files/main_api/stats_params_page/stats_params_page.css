@@ -66,6 +66,7 @@ button:active {
   height: 25px;
   width: 25px;
   background-color: black;
+  border-radius: 7px;
 }
 
 .container:hover input ~ .checkmark {
