@@ -31,7 +31,6 @@ class CitiesPageView(View):
 class CitiesChooseParams(View):
     @staticmethod
     def get(request, *args, **kwargs):
-
         params = ["Temperature (2 m)", "Temperature (120 m)", "Relative Humidity (2 m)", "Rain", "Snowfall",
                   "Snow Depth", "Cloud Cover", "Visibility", "Wind Speed (10 m)", "Wind Speed (180 m)",
                   "Wind Direction (10 m)", "Wind Direction (180 m)"]
@@ -40,7 +39,6 @@ class CitiesChooseParams(View):
                       context={'params': params})
 
 
-'''
 class CityStatistics(View):
     weather_params = {
         "Temperature (2 m)": "temperature_2m",
@@ -56,10 +54,11 @@ class CityStatistics(View):
         "Wind Direction (10 m)": "wind_direction_10m",
         "Wind Direction (180 m)": "wind_direction_180m"
     }
-    
+
     @staticmethod
-    def get(request, city_id):
+    def post(request, city_id, country_id):
         city = City.objects.get(id=city_id)
         latitude = city.latitude
         longtitude = city.longitude
-'''
+        chosen_params = request.POST.getlist("checkedValues[]")
+        return HttpResponse()
