@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extend_head %}
+<link rel="stylesheet" href="{% static 'main_api/stats_params_page/stats_params_page.css' %}">
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
+{% endblock %}
+
 {% block content %}
 
 <h1>Choose params</h1>
 
 {% for param in params %}
-    <input type="checkbox" name="stats_checkbox" value="{{ param }}">{{ param }}<br>
+<label class="container">{{ param }}
+  <input type="checkbox" value="{{ param }}" name="stats_checkbox">
+  <span class="checkmark"></span>
+</label>
 {% endfor %}
 
 <button onclick="calc_func()">Calc</button>
