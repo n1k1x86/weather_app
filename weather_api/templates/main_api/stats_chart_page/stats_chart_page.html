@@ -3,37 +3,137 @@
 
 {% block extend_head %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<link rel="stylesheet" href="{% static 'main_api/stats_chart_page/stats_chart_page.css' %}">
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
+
 {% endblock %}
 
 {% block content %}
-<canvas id="myChart"></canvas>
+<canvas id="myChart" width="400" height="100"></canvas>
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
+var canvas = document.getElementById('myChart');
+var ctx = canvas.getContext('2d');
 var raw_chart_data = {{ chart_data|safe }};
 var labels = {{ labels|safe }}
 
 chart_data = buildDatasetsObj(raw_chart_data);
+
+const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+];
 
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
         datasets: chart_data
     },
+    borderColor: "white",
     options: {
         interaction: {
             intersect: false,
             mode: 'index',
-          },
+        },
+        scales: {
+            x: {
+            grid:{
+                display:false
+            },
+            ticks: {
+                callback: function(val, index) {
+                    if (index % 24 === 0) {
+                        date_obj = new Date(this.getLabelForValue(val).split(' ')[0]);
+                        month = months[date_obj.getMonth()];
+                        day = date_obj.getDate();
+                        return day + ' ' + month;
+                    }
+                    return '';
+                },
+                font: {
+                    size: 15,
+                    family: 'Pacifico'
+                }
+              },
+           },
+           y: {
+            grid:{
+                display:false
+            },
+            ticks: {
+                display: false, 
+           }
+        }
+        },
         plugins: {
+            legend: {
+                position: 'right',
+            },
+            title: {
+                display: true,
+                text: 'Weather Overall',
+                color: 'black',
+                font: {
+                    size: 35,
+                    family: 'Pacifico'
+                }
+            },
             tooltip: {
                 callbacks: {
                     label: function (tooltipItem) {
-                        // Customize the label text here
-                        return 'Value: ';
+                        dataIndex = tooltipItem.dataIndex;
+                        datasetLabel = tooltipItem.dataset.label;
+                        data_unit = '°C';
+
+                        switch(datasetLabel){
+                            case "Temperature (2 m)":
+                            case "Temperature (120 m)":
+                                data_unit = '°C';
+                                break;
+                            case "Relative Humidity (2 m)":
+                            case "Cloud Cover":
+                                data_unit = '%';
+                                break;
+                            case "Snowfall":
+                                data_unit = 'm'
+                                break;
+                            case "Rain":
+                                data_unit = 'mm';
+                                break;
+                            case "Snow Depth":
+                            case "Visibility":
+                                data_unit = 'm';
+                                break;
+                            case "Wind Speed (10 m)":
+                            case "Wind Speed (180 m)":
+                                data_unit = 'km/h';
+                                break;
+                            case "Wind Direction (10 m)":
+                            case "Wind Direction (180 m)":
+                                data_unit = '°';
+                                break;
+                        }
+                        
+                        currentData = tooltipItem.dataset.data[dataIndex].y;
+                        return datasetLabel + ': ' + currentData + " " + data_unit;
                     },
                     title: function (tooltipItem) {
-                        // Customize the title text here
-                        return 'Label: ';
+                        raw_label = tooltipItem[0].label
+                        dates = raw_label.split(' ');
+                        date_obj = new Date(dates[0]);
+                        month = months[date_obj.getMonth()];
+                        day = date_obj.getDate();
+                        
+                        return day + ' ' + month + ' ' + dates[1];
                     }
                 }
             }
@@ -55,8 +155,8 @@ function buildDatasetsObj(raw_chart_data) {
     for (let data of raw_chart_data){
         data['backgroundColor'] = getRandomColor();
         data['borderColor'] = getRandomColor();
-        data['borderWidth'] = 1;
-        data['pointRadius'] = 2;
+        data['borderWidth'] = 3;
+        data['pointRadius'] = 0;
         data['pointHoverRadius'] = 10;
     }
     return raw_chart_data;

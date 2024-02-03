@@ -79,10 +79,9 @@ class CityStatistics(View):
         for label in labels[1:]:
             chart_data.append({
                 'label': self.weather_params_charts[label],
-                'data': [{'x': dates[ind], 'y': data} for ind, data in enumerate(list(dataset[label]))]
+                'data': [{'x': dates[ind], 'y': round(data, 3)} for ind, data in
+                         enumerate(list(dataset[label]))]
             })
-
-        print(chart_data)
 
         return render(request, template_name="main_api/stats_chart_page/stats_chart_page.html",
                       context={'chart_data': json.dumps(chart_data), 'labels': labels})
