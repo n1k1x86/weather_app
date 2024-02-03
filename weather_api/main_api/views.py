@@ -1,16 +1,10 @@
+import json
+
 from django.shortcuts import render
 from django.views import View
 from .models import Country, City
 
-from django.http import HttpResponse
-
-
-#
-# import openmeteo_requests
-#
-# import requests_cache
-# import pandas as pd
-# from retry_requests import retry
+from .get_weather_data import get_weather_data
 
 
 class MainPageView(View):
@@ -55,10 +49,40 @@ class CityStatistics(View):
         "Wind Direction (180 m)": "wind_direction_180m"
     }
 
-    @staticmethod
-    def post(request, city_id, country_id):
+    weather_params_charts = {
+        "temperature_2m": "Temperature (2 m)",
+        "temperature_120m": "Temperature (120 m)",
+        "relative_humidity_2m": "Relative Humidity (2 m)",
+        "rain": "Rain",
+        "snowfall": "Snowfall",
+        "snow_depth": "Snow Depth",
+        "cloud_cover": "Cloud Cover",
+        "visibility": "Visibility",
+        "wind_speed_10m": "Wind Speed (10 m)",
+        "wind_speed_180m": "Wind Speed (180 m)",
+        "wind_direction_10m": "Wind Direction (10 m)",
+        "wind_direction_180m": "Wind Direction (180 m)"
+    }
+
+    def get(self, request, city_id, country_id):
         city = City.objects.get(id=city_id)
         latitude = city.latitude
-        longtitude = city.longitude
-        chosen_params = request.POST.getlist("checkedValues[]")
-        return HttpResponse()
+        longitude = city.longitude
+        chosen_params = list(map(lambda x: self.weather_params[x], request.GET.getlist("param")))
+
+        dataset = get_weather_data(latitude, longitude, chosen_params)
+        labels = list(dataset.columns)
+        dataset['date'] = dataset['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+        chart_data = []
+        dates = list(dataset['date'])
+
+        for label in labels[1:]:
+            chart_data.append({
+                'label': self.weather_params_charts[label],
+                'data': [{'x': dates[ind], 'y': data} for ind, data in enumerate(list(dataset[label]))]
+            })
+
+        print(chart_data)
+
+        return render(request, template_name="main_api/stats_chart_page/stats_chart_page.html",
+                      context={'chart_data': json.dumps(chart_data), 'labels': labels})

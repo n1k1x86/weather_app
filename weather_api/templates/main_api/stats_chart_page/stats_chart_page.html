@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extend_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<canvas id="myChart"></canvas>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var raw_chart_data = {{ chart_data|safe }};
+var labels = {{ labels|safe }}
+
+chart_data = buildDatasetsObj(raw_chart_data);
+
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        datasets: chart_data
+    },
+    options: {
+        interaction: {
+            intersect: false,
+            mode: 'index',
+          },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function (tooltipItem) {
+                        // Customize the label text here
+                        return 'Value: ';
+                    },
+                    title: function (tooltipItem) {
+                        // Customize the title text here
+                        return 'Label: ';
+                    }
+                }
+            }
+        }
+    }
+
+});
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function buildDatasetsObj(raw_chart_data) {
+    for (let data of raw_chart_data){
+        data['backgroundColor'] = getRandomColor();
+        data['borderColor'] = getRandomColor();
+        data['borderWidth'] = 1;
+        data['pointRadius'] = 2;
+        data['pointHoverRadius'] = 10;
+    }
+    return raw_chart_data;
+}
+
+</script>
+{% endblock %}
