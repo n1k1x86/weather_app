@@ -7,6 +7,12 @@ from .models import Country, City
 from .get_weather_data import get_weather_data
 
 
+class NoDataChosenView(View):
+    @staticmethod
+    def get(request, city_id, country_id):
+        return render(request, template_name='main_api/no_data_chosen/no_data_chosen.html')
+
+
 class MainPageView(View):
     @staticmethod
     def get(request):

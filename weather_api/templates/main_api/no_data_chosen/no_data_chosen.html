@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extend_head %}
+<link rel="stylesheet" href="{% static 'main_api/no_data_chosen/no_data_chosen.css' %}">
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
+{% endblock %}
+
+{% block content %}
+<div>
+  <h1>You didn't choose any parameters :(</h1>
+  <button onclick="toParams()">← Back to parameters choosing</button>
+</div>
+
+<script src="{% static 'main_api/no_data_chosen/js/back_to_params.js' %}"></script>
+{% endblock %}

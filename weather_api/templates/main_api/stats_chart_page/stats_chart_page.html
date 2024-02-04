@@ -142,8 +142,9 @@ function getRandomColor() {
 
 function buildDatasetsObj(raw_chart_data) {
     for (let data of raw_chart_data){
-        data['backgroundColor'] = getRandomColor();
-        data['borderColor'] = getRandomColor();
+        color = getRandomColor();
+        data['backgroundColor'] = color;
+        data['borderColor'] = color;
         data['borderWidth'] = 3;
         data['pointRadius'] = 0;
         data['pointHoverRadius'] = 10;
