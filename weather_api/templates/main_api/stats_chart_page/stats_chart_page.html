@@ -5,11 +5,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 <link rel="stylesheet" href="{% static 'main_api/stats_chart_page/stats_chart_page.css' %}">
 <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet'>
-
 {% endblock %}
 
 {% block content %}
-<canvas id="myChart" width="400" height="100"></canvas>
+<canvas id="myChart" width="400" height="100" style="background-color: rgba(184, 223, 235, 0.644);"></canvas>
 <script>
 var canvas = document.getElementById('myChart');
 var ctx = canvas.getContext('2d');
@@ -47,7 +46,7 @@ var myChart = new Chart(ctx, {
         scales: {
             x: {
             grid:{
-                display:false
+                display: false
             },
             ticks: {
                 callback: function(val, index) {
@@ -59,15 +58,16 @@ var myChart = new Chart(ctx, {
                     }
                     return '';
                 },
+                color: 'black',
                 font: {
-                    size: 15,
-                    family: 'Pacifico'
+                    size: 13,
+                    family: 'Pacifico',
                 }
               },
            },
            y: {
             grid:{
-                display:false
+                display: true
             },
             ticks: {
                 display: false, 
@@ -75,6 +75,12 @@ var myChart = new Chart(ctx, {
         }
         },
         plugins: {
+            chartAreaBorder: {
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                borderDashOffset: 2,
+            },
             legend: {
                 position: 'right',
             },
@@ -143,12 +149,12 @@ var myChart = new Chart(ctx, {
 });
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+        color += Math.floor(Math.random() * 10);
     }
     return color;
+
 }
 
 function buildDatasetsObj(raw_chart_data) {

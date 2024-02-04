@@ -6,6 +6,9 @@ from retry_requests import retry
 
 
 def process_data(response, chosen_params):
+    current = response.Current()
+    current_ = current.Variables(0).Value()
+    print(current_)
     hourly = response.Hourly()
     hourly_data = {"date": pd.date_range(
         start=pd.to_datetime(hourly.Time(), unit="s"),
@@ -29,6 +32,7 @@ def get_weather_data(latitude, longitude, chosen_params):
         "latitude": latitude,
         "longitude": longitude,
         "hourly": chosen_params,
+        "current": chosen_params,
         "timezone": "auto"
     }
 
