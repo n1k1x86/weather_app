@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+<button onclick="return_func()">← Back to parameters choosing</button>
 <canvas id="myChart" width="400" height="100" style="background-color: rgba(184, 223, 235, 0.644);"></canvas>
 <div id="current_div">
     <h1>Current data</h1>
@@ -182,6 +183,8 @@ function getDataUnit(datasetLabel){
     }
     return data_unit;
 }
-
+function return_func(){
+    window.history.back();
+}
 </script>
 {% endblock %}

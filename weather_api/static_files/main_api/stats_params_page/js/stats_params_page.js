@@ -15,3 +15,7 @@ function calc_func() {
     const get_params = '?param=' + checkedValues.join('&param=');
     window.location.href = current_url + get_params;
 }
+
+function toCities() {
+    window.history.back();
+}
