@@ -9,13 +9,24 @@
 
 {% block content %}
 <canvas id="myChart" width="400" height="100" style="background-color: rgba(184, 223, 235, 0.644);"></canvas>
+<div id="current_div">
+    <h1>Current data</h1>
+</div>
 <script>
 var canvas = document.getElementById('myChart');
 var ctx = canvas.getContext('2d');
 var raw_chart_data = {{ chart_data|safe }};
 var labels = {{ labels|safe }}
-
 chart_data = buildDatasetsObj(raw_chart_data);
+var current_dict = {{ current_data|safe }}
+let parent = document.querySelector('#current_div');
+for (var key in current_dict) {
+    var value = current_dict[key]
+	let p = document.createElement('p');
+    data_unit = getDataUnit(key);
+	p.textContent = key + ': ' + value + ' ' + data_unit;
+	parent.appendChild(p);
+}
 
 const months = [
     'January',
@@ -98,36 +109,7 @@ var myChart = new Chart(ctx, {
                     label: function (tooltipItem) {
                         dataIndex = tooltipItem.dataIndex;
                         datasetLabel = tooltipItem.dataset.label;
-                        data_unit = '°C';
-
-                        switch(datasetLabel){
-                            case "Temperature (2 m)":
-                            case "Temperature (120 m)":
-                                data_unit = '°C';
-                                break;
-                            case "Relative Humidity (2 m)":
-                            case "Cloud Cover":
-                                data_unit = '%';
-                                break;
-                            case "Snowfall":
-                                data_unit = 'm'
-                                break;
-                            case "Rain":
-                                data_unit = 'mm';
-                                break;
-                            case "Snow Depth":
-                            case "Visibility":
-                                data_unit = 'm';
-                                break;
-                            case "Wind Speed (10 m)":
-                            case "Wind Speed (180 m)":
-                                data_unit = 'km/h';
-                                break;
-                            case "Wind Direction (10 m)":
-                            case "Wind Direction (180 m)":
-                                data_unit = '°';
-                                break;
-                        }
+                        data_unit = getDataUnit(datasetLabel);
                         
                         currentData = tooltipItem.dataset.data[dataIndex].y;
                         return datasetLabel + ': ' + currentData + " " + data_unit;
@@ -166,6 +148,39 @@ function buildDatasetsObj(raw_chart_data) {
         data['pointHoverRadius'] = 10;
     }
     return raw_chart_data;
+}
+
+function getDataUnit(datasetLabel){
+    data_unit = '°C';
+    switch(datasetLabel){
+        case "Temperature (2 m)":
+        case "Temperature (120 m)":
+            data_unit = '°C';
+            break;
+        case "Relative Humidity (2 m)":
+        case "Cloud Cover":
+            data_unit = '%';
+            break;
+        case "Snowfall":
+            data_unit = 'm'
+            break;
+        case "Rain":
+            data_unit = 'mm';
+            break;
+        case "Snow Depth":
+        case "Visibility":
+            data_unit = 'm';
+            break;
+        case "Wind Speed (10 m)":
+        case "Wind Speed (180 m)":
+            data_unit = 'km/h';
+            break;
+        case "Wind Direction (10 m)":
+        case "Wind Direction (180 m)":
+            data_unit = '°';
+            break;
+    }
+    return data_unit;
 }
 
 </script>

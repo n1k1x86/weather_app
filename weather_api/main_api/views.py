@@ -70,7 +70,7 @@ class CityStatistics(View):
         longitude = city.longitude
         chosen_params = list(map(lambda x: self.weather_params[x], request.GET.getlist("param")))
 
-        dataset = get_weather_data(latitude, longitude, chosen_params)
+        dataset, current_data = get_weather_data(latitude, longitude, chosen_params)
         labels = list(dataset.columns)
         dataset['date'] = dataset['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
         chart_data = []
@@ -83,5 +83,8 @@ class CityStatistics(View):
                          enumerate(list(dataset[label]))]
             })
 
+        current_data = {self.weather_params_charts[k]: round(v, 2) for k, v in current_data.items()}
+
         return render(request, template_name="main_api/stats_chart_page/stats_chart_page.html",
-                      context={'chart_data': json.dumps(chart_data), 'labels': labels})
+                      context={'chart_data': json.dumps(chart_data), 'labels': labels,
+                               'current_data': json.dumps(current_data)})

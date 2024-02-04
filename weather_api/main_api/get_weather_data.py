@@ -7,8 +7,7 @@ from retry_requests import retry
 
 def process_data(response, chosen_params):
     current = response.Current()
-    current_ = current.Variables(0).Value()
-    print(current_)
+    current_data = {}
     hourly = response.Hourly()
     hourly_data = {"date": pd.date_range(
         start=pd.to_datetime(hourly.Time(), unit="s"),
@@ -18,8 +17,9 @@ def process_data(response, chosen_params):
     )}
     for ind, param in enumerate(chosen_params):
         hourly_data[param] = hourly.Variables(ind).ValuesAsNumpy()
+        current_data[param] = current.Variables(ind).Value()
 
-    return pd.DataFrame(data=hourly_data)
+    return pd.DataFrame(data=hourly_data), current_data
 
 
 def get_weather_data(latitude, longitude, chosen_params):
@@ -37,5 +37,5 @@ def get_weather_data(latitude, longitude, chosen_params):
     }
 
     response = openmeteo.weather_api(url, params=params)[0]
-    hourly_dataframe = process_data(response, chosen_params)
-    return hourly_dataframe
+    hourly_dataframe, current_dataframe = process_data(response, chosen_params)
+    return hourly_dataframe, current_dataframe
